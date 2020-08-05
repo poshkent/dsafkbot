@@ -1,0 +1,6 @@
+discord.py
+datetime
+asyncio
+aiohttp
+websockets
+chadset
