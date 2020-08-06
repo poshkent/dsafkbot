@@ -39,7 +39,7 @@ async def info(ctx, member:discord.Member):
 	emb.add_field(name = "Упоминание", value = member.mention, inline = False)
 	emb.add_field(name = "Состояние войса", value = member.voice, inline = False)
 	emb.set_thumbnail(url = member.avatar_url)
-	emb.set_footer(text = f"Вызвал{ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+	emb.set_footer(text = f"Вызвал {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
 	emb.set_author(name = ctx.message.author, icon_url = ctx.message.author.avatar_url)
 	await ctx.send(embed = emb) 
 
@@ -52,7 +52,8 @@ async def all(ctx):
 	emb.add_field(name = "mute", value = "Выдаёт роль MUTED на время в минутах", inline = False)
 	emb.add_field(name = "unmute", value = "Забирает роль MUTED", inline = False)
 	emb.add_field(name = "clear", value = "Удаляет указанное колличество сообщений", inline = False)
-	emb.set_footer(text = f"Вызвал {ctx.message.author}", icon_url = ctx.message.author.avatar_url)
+	emb.set_footer(text=f"Вызвал {ctx.message.author}", icon_url=ctx.message.author.avatar_url)
+	emb.set_author(name=ctx.message.author, icon_url=ctx.message.author.avatar_url)
 	await ctx.send(embed = emb) 
 
 
@@ -63,10 +64,12 @@ async def mute(ctx,member:discord.Member, time:int ,reason):
 	channel = Bot.get_channel(723928632418107492)
 	muterole = discord.utils.get(ctx.guild.roles, id = 730127066640416858)
 	emb = discord.Embed(title = "Мут", color = col)
-	emb.add_field(name = "Мут дал", value = ctx.message.author.mention, inline = False)
 	emb.add_field(name = "Нарушитель", value = member.mention, inline = False)
 	emb.add_field(name = "Время в минутах", value = time, inline = False)
 	emb.add_field(name = "Причина", value = reason, inline = False)
+	emb.set_thumbnail(url=member.avatar_url)
+	emb.set_footer(text=f"Выдал мут {ctx.message.author.mention}", icon_url=ctx.message.author.avatar_url)
+	emb.set_author(name=ctx.message.author, icon_url=ctx.message.author.avatar_url)
 	await member.add_roles(muterole)
 	await channel.send(embed = emb)
 	await asyncio.sleep(time * 60)
@@ -79,9 +82,11 @@ async def unmute(ctx,member:discord.Member):
 	channel = Bot.get_channel(723928632418107492)
 	muterole = discord.utils.get(ctx.guild.roles, id = 730127066640416858)
 	emb = discord.Embed(title = "Размут", color = col)
-	emb.add_field(name = "Размутил", value = ctx.message.author.mention, inline = False)
 	emb.add_field(name = "Нарушитель", value = member.mention, inline = False)
-	await ctx.send(embed = emb)
+	emb.set_thumbnail(url=member.avatar_url)
+	emb.set_footer(text=f"Размутил {ctx.message.author.mention}", icon_url=ctx.message.author.avatar_url)
+	emb.set_author(name=ctx.message.author, icon_url=ctx.message.author.avatar_url)
+	await channel.send(embed = emb)
 	await member.remove_roles(muterole)
 
 
@@ -95,9 +100,8 @@ async def clear(ctx, amount = 5):
 @Bot.event
 async def on_member_join(member):
 	channel = Bot.get_channel(723928632418107492)
-	for guild in Bot.guilds:
-		role = discord.utils.get(guild.roles, id = 731835471306424351)
-	await member.add_roles(role)
+	noobrole = discord.utils.get(ctx.guild.roles, id=731835471306424351)
+	await member.add_roles(noobrole)
 	await channel.send(f"{member.mention} дарова ебать")
 
 
@@ -105,7 +109,7 @@ async def on_member_join(member):
 
 @Bot.command()
 @commands.has_permissions(view_audit_log = True)
-async def megaspam(ctx, member:discord.Member, amount = 50):
+async def spamm(ctx, member:discord.Member, amount = 50):
 	deleted = await ctx.message.channel.purge(limit = 1)
 	emb = discord.Embed(title = 'Это тебе сука спам прилелел', color = col )
 	emb.add_field(name = "Тебе сука", value = member.mention, inline = False)
