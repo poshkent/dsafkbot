@@ -120,4 +120,4 @@ async def spamm(ctx, member:discord.Member, amount = 50):
 
 
 token = os.environ.get('BOT_TOKEN')
-Bot.run(token)
+Bot.run(str(token))
