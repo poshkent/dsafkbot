@@ -68,7 +68,7 @@ async def mute(ctx,member:discord.Member, time:int ,reason):
 	emb.add_field(name = "Время в минутах", value = time, inline = False)
 	emb.add_field(name = "Причина", value = reason, inline = False)
 	emb.set_thumbnail(url=member.avatar_url)
-	emb.set_footer(text=f"Выдал мут {ctx.message.author.mention}", icon_url=ctx.message.author.avatar_url)
+	emb.set_footer(text=f"Выдал мут {ctx.message.author}", icon_url=ctx.message.author.avatar_url)
 	emb.set_author(name=ctx.message.author, icon_url=ctx.message.author.avatar_url)
 	await member.add_roles(muterole)
 	await channel.send(embed = emb)
@@ -84,7 +84,7 @@ async def unmute(ctx,member:discord.Member):
 	emb = discord.Embed(title = "Размут", color = col)
 	emb.add_field(name = "Нарушитель", value = member.mention, inline = False)
 	emb.set_thumbnail(url=member.avatar_url)
-	emb.set_footer(text=f"Размутил {ctx.message.author.mention}", icon_url=ctx.message.author.avatar_url)
+	emb.set_footer(text=f"Размутил {ctx.message.author}", icon_url=ctx.message.author.avatar_url)
 	emb.set_author(name=ctx.message.author, icon_url=ctx.message.author.avatar_url)
 	await channel.send(embed = emb)
 	await member.remove_roles(muterole)
@@ -100,9 +100,10 @@ async def clear(ctx, amount = 5):
 @Bot.event
 async def on_member_join(member):
 	channel = Bot.get_channel(723928632418107492)
-	noobrole = discord.utils.get(ctx.guild.roles, id=731835471306424351)
-	await member.add_roles(noobrole)
+	newbie = discord.utils.get(ctx.guild.roles, id=741392273396465795)
+	await member.add_roles(newbie)
 	await channel.send(f"{member.mention} дарова ебать")
+
 
 
 
