@@ -99,13 +99,10 @@ async def clear(ctx, amount = 5):
 
 @Bot.event
 async def on_member_join(member):
-	channel = Bot.get_channel(723928632418107492)
-	newbie = discord.utils.get(ctx.guild.roles, id=741392273396465795)
+	channel = Bot.get_channel(682600998224789613)
+	newbie = discord.utils.get(ctx.guild.roles, id=745004706543304805)
 	await member.add_roles(newbie)
 	await channel.send(f"{member.mention} дарова ебать")
-
-
-
 
 
 @Bot.command()
@@ -117,8 +114,17 @@ async def spamm(ctx, member:discord.Member, amount = 50):
 	x = 0
 	while x < amount:
 		await member.send(embed = emb)
-		x = x + 1
+		x += 1
 
+
+@Bot.command()
+@commands.has_permissions(view_audit_log = True)
+async def spamchik(ctx, slovo, amount = 50):
+	deleted = await ctx.message.channel.purge(limit = 1)
+	x = 0
+	while x < amount:
+		await ctx.send(slovo)
+		x += 1
 
 token = os.environ.get('BOT_TOKEN')
 Bot.run(str(token))
