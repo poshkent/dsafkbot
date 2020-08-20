@@ -1,3 +1,4 @@
+import config
 import datetime
 import discord
 import asyncio
@@ -6,16 +7,21 @@ from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 from discord import Activity, ActivityType
 
+prefix = config.prefix
+col = config.color
+role_channel_id = config.role_channel_id
+muterole_id = config.muterole_id
+greeting_channel_id = config.greeting_channel_id
+newbie_role_id = config.newbie_role_id
 
-Bot = commands.Bot(command_prefix=';')
+Bot = commands.Bot(command_prefix=prefix)
 
-col = 0x1ac0c6
 
 async def status_task():
 	while True:
 			offset = datetime.timezone(datetime.timedelta(hours=3))
 			minsk_time = datetime.datetime.now(offset)
-			await Bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f'; | {minsk_time.hour} : {minsk_time.minute}, {minsk_time.day}.{minsk_time.month}.{minsk_time.year}'))
+			await Bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f'{prefix} | {minsk_time.hour} : {minsk_time.minute}, {minsk_time.day}.{minsk_time.month}.{minsk_time.year}'))
 			await asyncio.sleep(60)
 
 
@@ -58,11 +64,12 @@ async def all(ctx):
 
 
 
+
 @Bot.command()
 @commands.has_permissions(view_audit_log = True)
 async def mute(ctx,member:discord.Member, time:int ,reason):
-	channel = Bot.get_channel(723928632418107492)
-	muterole = discord.utils.get(ctx.guild.roles, id = 730127066640416858)
+	channel = Bot.get_channel(role_channel_id)
+	muterole = discord.utils.get(ctx.guild.roles, id = muterole_id)
 	emb = discord.Embed(title = "Мут", color = col)
 	emb.add_field(name = "Нарушитель", value = member.mention, inline = False)
 	emb.add_field(name = "Время в минутах", value = time, inline = False)
@@ -79,8 +86,8 @@ async def mute(ctx,member:discord.Member, time:int ,reason):
 @Bot.command()
 @commands.has_permissions(view_audit_log = True)
 async def unmute(ctx,member:discord.Member):
-	channel = Bot.get_channel(723928632418107492)
-	muterole = discord.utils.get(ctx.guild.roles, id = 730127066640416858)
+	channel = Bot.get_channel(role_channel_id)
+	muterole = discord.utils.get(ctx.guild.roles, id = muterole_id)
 	emb = discord.Embed(title = "Размут", color = col)
 	emb.add_field(name = "Нарушитель", value = member.mention, inline = False)
 	emb.set_thumbnail(url=member.avatar_url)
@@ -97,12 +104,14 @@ async def clear(ctx, amount = 5):
 
 
 
+
 @Bot.event
 async def on_member_join(member):
-	channel = Bot.get_channel(682600998224789613)
-	newbie = discord.utils.get(ctx.guild.roles, id=745004706543304805)
+	channel = Bot.get_channel(greeting_channel_id)
+	newbie = discord.utils.get(ctx.guild.roles, id = newbie_role_id)
 	await member.add_roles(newbie)
 	await channel.send(f"{member.mention} дарова ебать")
+
 
 
 @Bot.command()
